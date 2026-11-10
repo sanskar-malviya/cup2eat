@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" fill="none">
+  <defs>
+    <radialGradient id="c2eGreen" cx="50%" cy="38%" r="75%">
+      <stop offset="0%" stop-color="#27503C"/>
+      <stop offset="100%" stop-color="#143024"/>
+    </radialGradient>
+    <linearGradient id="c2eGold" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#F0DCA0"/>
+      <stop offset="45%" stop-color="#D5AF57"/>
+      <stop offset="100%" stop-color="#A9833A"/>
+    </linearGradient>
+  </defs>
+
+  <!-- outer gold ring -->
+  <circle cx="100" cy="100" r="95" fill="url(#c2eGold)"/>
+  <circle cx="100" cy="100" r="88" fill="url(#c2eGreen)"/>
+  <circle cx="100" cy="100" r="82" fill="none" stroke="url(#c2eGold)" stroke-width="1.5" opacity="0.55"/>
+
+  <g fill="url(#c2eGold)" font-family="Georgia, 'Times New Roman', serif" font-weight="700" text-anchor="middle">
+    <text x="100" y="78" font-size="36" letter-spacing="2">CUP</text>
+    <text x="100" y="124" font-size="40">2</text>
+    <text x="100" y="166" font-size="36" letter-spacing="3">EAT</text>
+  </g>
+
+  <!-- dashes flanking the 2 -->
+  <g stroke="url(#c2eGold)" stroke-width="3.5" stroke-linecap="round">
+    <line x1="50" y1="110" x2="78" y2="110"/>
+    <line x1="122" y1="110" x2="150" y2="110"/>
+  </g>
+</svg>

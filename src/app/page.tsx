@@ -3,7 +3,7 @@ import Reveal from "@/components/Reveal";
 import InstagramEmbed from "@/components/InstagramEmbed";
 import OrderModal from "@/components/order/OrderModal";
 import OrderButton from "@/components/order/OrderButton";
-import { BRAND, FLAVOURS, USE_CASES, TRUST, REELS, waLink } from "@/lib/brand";
+import { BRAND, FLAVOURS, TRUST, REELS, waLink } from "@/lib/brand";
 
 export default function Home() {
   return (
@@ -13,9 +13,11 @@ export default function Home() {
       <BadgeMarquee />
       <Mission />
       <Flavours />
-      <UseCases />
+      <Products />
       <Wholesale />
       <Trust />
+      <Gallery />
+      <Testimonials />
       <Reviews />
       <FAQ />
       <Contact />
@@ -248,26 +250,144 @@ function Flavours() {
   );
 }
 
-/* ---------------- USE CASES ---------------- */
-function UseCases() {
+/* ---------------- PRODUCTS (daily use) ---------------- */
+const PRODUCTS = [
+  { img: "product-drinks", tag: "Bestseller", title: "Hot & Cold Drinks", text: "Masala chai, filter coffee, cold coffee — it holds them all." },
+  { img: "product-icecream", tag: "Summer pick", title: "Ice-Cream Serves", text: "Scoop in, serve, and eat the cup after. Zero mess." },
+  { img: "product-brownie", tag: "Indulgent", title: "Brownie in a Cup", text: "Warm brownie with sauce, served inside an edible cup." },
+  { img: "product-shake", tag: "Fan favourite", title: "Milkshakes", text: "Thick shakes with whipped cream — crunchy to the last sip." },
+  { img: "product-bulk", tag: "For business", title: "Bulk Orders", text: "Cafés, events and caterers — delivered across India." },
+  { img: "product-gift", tag: "Festive", title: "Gift Boxes", text: "Diwali and corporate gifting with a sustainable twist." },
+];
+
+function Products() {
+  return (
+    <section className="bg-forest-deep py-24">
+      <div className="mx-auto max-w-7xl px-5">
+        <Reveal className="text-center">
+          <span className="text-sm font-semibold uppercase tracking-widest text-gold">
+            For every craving
+          </span>
+          <h2 className="mt-2 font-serif text-4xl font-bold text-cream md:text-5xl">
+            One Cup, <span className="text-gradient-gold">Endless Ways</span>
+          </h2>
+        </Reveal>
+        <div className="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          {PRODUCTS.map((p, i) => (
+            <Reveal key={p.title} delay={(i % 3) * 100}>
+              <div className="group h-full overflow-hidden rounded-3xl border border-cream/10 bg-forest transition hover:-translate-y-1 hover:border-gold/50">
+                <div className="relative aspect-[4/3] overflow-hidden">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src={`/images/alpha/${p.img}.webp`}
+                    alt={p.title}
+                    loading="lazy"
+                    className="h-full w-full object-cover transition duration-500 group-hover:scale-105"
+                  />
+                  <span className="absolute left-3 top-3 rounded-full bg-forest-deep/80 px-3 py-1 text-xs font-semibold text-gold backdrop-blur">
+                    {p.tag}
+                  </span>
+                </div>
+                <div className="p-5">
+                  <h3 className="font-serif text-xl font-bold text-cream">{p.title}</h3>
+                  <p className="mt-1 text-sm text-cream/60">{p.text}</p>
+                  <OrderButton className="mt-4 text-sm font-semibold text-gold hover:text-gold-soft">
+                    Order now →
+                  </OrderButton>
+                </div>
+              </div>
+            </Reveal>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ---------------- GALLERY (in the wild) ---------------- */
+const GALLERY = [
+  { img: "gallery-college", cap: "College fests" },
+  { img: "gallery-cafe", cap: "Café counters" },
+  { img: "gallery-stall", cap: "Event stalls" },
+  { img: "gallery-tasting", cap: "Eat the cup" },
+  { img: "gallery-festive", cap: "Celebrations" },
+  { img: "gallery-school", cap: "School exhibitions" },
+];
+
+function Gallery() {
+  return (
+    <section id="gallery" className="bg-forest py-24">
+      <div className="mx-auto max-w-7xl px-5">
+        <Reveal className="text-center">
+          <span className="text-sm font-semibold uppercase tracking-widest text-gold">
+            Out in the world
+          </span>
+          <h2 className="mt-2 font-serif text-4xl font-bold text-cream md:text-5xl">
+            CUP2EAT <span className="text-gradient-gold">in the Wild</span>
+          </h2>
+        </Reveal>
+        <div className="mt-12 grid grid-cols-2 gap-4 md:grid-cols-3">
+          {GALLERY.map((g, i) => (
+            <Reveal key={g.img} delay={(i % 3) * 80}>
+              <div className="group relative aspect-square overflow-hidden rounded-2xl">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={`/images/alpha/${g.img}.webp`}
+                  alt={g.cap}
+                  loading="lazy"
+                  className="h-full w-full object-cover transition duration-500 group-hover:scale-110"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-forest-deep/80 to-transparent opacity-0 transition group-hover:opacity-100" />
+                <span className="absolute bottom-3 left-3 text-sm font-semibold text-cream opacity-0 transition group-hover:opacity-100">
+                  {g.cap}
+                </span>
+              </div>
+            </Reveal>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ---------------- TESTIMONIALS ---------------- */
+const TESTIMONIALS = [
+  { q: "Had chai in it and then just ate the cup — my whole friend group was obsessed. Genuinely tasty, not cardboard.", name: "Riya", role: "College student" },
+  { q: "We switched our tasting counter to CUP2EAT for a weekend pop-up. Customers loved the novelty and we cut our cup waste to zero.", name: "Aman", role: "Café owner" },
+  { q: "Used the gift boxes for Diwali. Clients kept messaging about how unique they were. Perfect sustainable gifting.", name: "Neha", role: "Corporate buyer" },
+  { q: "Ordered in bulk for a college fest — delivery was on time across the country and the cups held cold coffee without a leak.", name: "Karan", role: "Event organiser" },
+  { q: "The chocolate-coated one is dangerous. Drink, then dessert, then nothing to throw. This is the future.", name: "Simran", role: "Foodie" },
+];
+
+function Testimonials() {
   return (
     <section className="bg-forest-deep py-24">
       <div className="mx-auto max-w-7xl px-5">
         <Reveal className="text-center">
           <h2 className="font-serif text-4xl font-bold text-cream md:text-5xl">
-            Perfect For <span className="text-gradient-gold">Everything</span>
+            What People <span className="text-gradient-gold">Are Saying</span>
           </h2>
         </Reveal>
-        <div className="mt-14 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-          {USE_CASES.map((u, i) => (
-            <Reveal key={u.title} delay={i * 100}>
-              <div className="h-full rounded-2xl border border-cream/10 bg-forest p-7 transition hover:-translate-y-1 hover:border-gold/50">
-                <div className="text-4xl">{u.icon}</div>
-                <h3 className="mt-4 font-serif text-lg font-bold text-cream">
-                  {u.title}
-                </h3>
-                <p className="mt-1 text-sm text-cream/60">{u.text}</p>
-              </div>
+        <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          {TESTIMONIALS.map((t, i) => (
+            <Reveal key={t.name} delay={(i % 3) * 100}>
+              <figure className="flex h-full flex-col rounded-3xl border border-cream/10 bg-gradient-to-b from-forest to-forest-deep p-6">
+                <div className="text-gold" aria-hidden>
+                  ★★★★★
+                </div>
+                <blockquote className="mt-3 flex-1 text-cream/80">
+                  &ldquo;{t.q}&rdquo;
+                </blockquote>
+                <figcaption className="mt-5 flex items-center gap-3">
+                  <span className="grid h-10 w-10 place-items-center rounded-full bg-gold/15 font-serif font-bold text-gold">
+                    {t.name[0]}
+                  </span>
+                  <span>
+                    <span className="block text-sm font-semibold text-cream">{t.name}</span>
+                    <span className="block text-xs text-cream/50">{t.role}</span>
+                  </span>
+                </figcaption>
+              </figure>
             </Reveal>
           ))}
         </div>
@@ -432,7 +552,20 @@ function Reviews() {
         <div className="mt-12 grid items-start gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {REELS.map((url, i) => (
             <Reveal key={url} delay={(i % 3) * 100}>
-              <InstagramEmbed url={url} />
+              <div className="rounded-2xl bg-gradient-to-br from-gold/40 via-leaf/30 to-gold/40 p-[2px] shadow-lg shadow-black/20">
+                <div className="rounded-[14px] bg-forest-deep p-2">
+                  <div className="mb-2 flex items-center gap-2 px-1">
+                    <span className="grid h-7 w-7 place-items-center rounded-full bg-gradient-to-br from-gold to-leaf text-xs font-bold text-forest-deep">
+                      C2
+                    </span>
+                    <span className="text-sm font-semibold text-cream">@cup2eat</span>
+                    <span className="ml-auto text-xs text-cream/40">Reel</span>
+                  </div>
+                  <div className="overflow-hidden rounded-lg">
+                    <InstagramEmbed url={url} />
+                  </div>
+                </div>
+              </div>
             </Reveal>
           ))}
         </div>

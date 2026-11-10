@@ -1,6 +1,9 @@
 import Cup3DClient from "@/components/three/Cup3DClient";
 import Reveal from "@/components/Reveal";
-import { BRAND, FLAVOURS, USE_CASES, TRUST, waLink } from "@/lib/brand";
+import InstagramEmbed from "@/components/InstagramEmbed";
+import OrderModal from "@/components/order/OrderModal";
+import OrderButton from "@/components/order/OrderButton";
+import { BRAND, FLAVOURS, USE_CASES, TRUST, REELS, waLink } from "@/lib/brand";
 
 export default function Home() {
   return (
@@ -14,9 +17,26 @@ export default function Home() {
       <Wholesale />
       <Trust />
       <Reviews />
+      <FAQ />
       <Contact />
       <Footer />
+      <OrderModal />
+      <FloatingWhatsApp />
     </main>
+  );
+}
+
+function FloatingWhatsApp() {
+  return (
+    <a
+      href={waLink("Hi CUP2EAT! I have a question.")}
+      target="_blank"
+      rel="noopener noreferrer"
+      aria-label="Chat on WhatsApp"
+      className="fixed bottom-5 right-5 z-40 grid h-14 w-14 place-items-center rounded-full bg-[#25D366] text-2xl shadow-lg shadow-black/30 transition hover:scale-110"
+    >
+      <span aria-hidden>💬</span>
+    </a>
   );
 }
 
@@ -26,8 +46,14 @@ function Nav() {
     <header className="fixed inset-x-0 top-0 z-50 backdrop-blur-md">
       <div className="mx-auto flex max-w-7xl items-center justify-between px-5 py-4">
         <a href="#top" className="flex items-center gap-2.5">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/logo/cup2eat-logo.svg" alt="CUP2EAT logo" className="h-11 w-11" />
+          <span className="block h-11 w-11 overflow-hidden rounded-full ring-1 ring-gold/40">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="/logo/logo.png"
+              alt="CUP2EAT logo"
+              className="h-full w-full scale-[1.18] object-cover"
+            />
+          </span>
           <span className="font-serif text-xl font-bold tracking-wide text-cream">
             CUP<span className="text-gold">2</span>EAT
           </span>
@@ -38,14 +64,9 @@ function Nav() {
           <a href="#trust" className="hover:text-gold">Why Us</a>
           <a href="#contact" className="hover:text-gold">Contact</a>
         </nav>
-        <a
-          href={waLink("Hi CUP2EAT! I'd like to order edible cups.")}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="rounded-full bg-gold px-5 py-2 text-sm font-semibold text-forest-deep transition hover:bg-gold-soft"
-        >
+        <OrderButton className="rounded-full bg-gold px-5 py-2 text-sm font-semibold text-forest-deep transition hover:bg-gold-soft">
           Order Now
-        </a>
+        </OrderButton>
       </div>
     </header>
   );
@@ -74,27 +95,38 @@ function Hero() {
             dessert — then eat the cup. Free delivery all over India.
           </p>
           <div className="mt-8 flex flex-wrap gap-4">
+            <OrderButton className="rounded-full bg-gold px-7 py-3.5 font-semibold text-forest-deep shadow-lg shadow-gold/20 transition hover:bg-gold-soft">
+              Order Now →
+            </OrderButton>
             <a
               href={waLink("Hi CUP2EAT! I'd like to order edible cups.")}
               target="_blank"
-              className="rounded-full bg-gold px-7 py-3.5 font-semibold text-forest-deep shadow-lg shadow-gold/20 transition hover:bg-gold-soft"
-            >
-              Order on WhatsApp
-            </a>
-            <a
-              href="#wholesale"
+              rel="noopener noreferrer"
               className="rounded-full border border-cream/30 px-7 py-3.5 font-semibold text-cream transition hover:border-gold hover:text-gold"
             >
-              Bulk / Café Enquiry
+              Order on WhatsApp
             </a>
           </div>
           <p className="mt-6 text-sm text-cream/50">
             ₹20 / cup retail · from ~₹10 / cup wholesale · 4 flavours
           </p>
+          <div className="mt-8 flex gap-8 border-t border-cream/10 pt-6">
+            {[
+              { n: "100ml", l: "per cup" },
+              { n: "4", l: "flavours" },
+              { n: "0", l: "plastic waste" },
+              { n: "Pan-India", l: "free delivery" },
+            ].map((s) => (
+              <div key={s.l}>
+                <div className="font-serif text-xl font-bold text-gradient-gold">{s.n}</div>
+                <div className="text-xs text-cream/50">{s.l}</div>
+              </div>
+            ))}
+          </div>
         </div>
 
         <div className="relative h-[420px] md:h-[600px]">
-          <Cup3DClient interactive className="h-full w-full" />
+          <Cup3DClient variant="hero" className="h-full w-full" />
           <p className="absolute bottom-2 left-1/2 -translate-x-1/2 text-xs uppercase tracking-widest text-cream/40">
             drag to spin
           </p>
@@ -106,12 +138,18 @@ function Hero() {
 
 /* ---------------- BADGE MARQUEE ---------------- */
 function BadgeMarquee() {
-  const items = [...TRUST, "Free Pan-India Delivery", "Small Sip · Big Change"];
+  const items = [
+    ...TRUST,
+    "Free Pan-India Delivery",
+    "Small Sip · Big Change",
+    "Drink it · Then Eat it",
+  ];
+  const row = [...items, ...items];
   return (
-    <div className="border-y border-cream/10 bg-forest py-4">
-      <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-center gap-x-8 gap-y-2 px-5 text-sm font-semibold uppercase tracking-wider text-gold/90">
-        {items.map((t) => (
-          <span key={t} className="flex items-center gap-2">
+    <div className="overflow-hidden border-y border-cream/10 bg-forest py-4">
+      <div className="flex w-max animate-marquee items-center gap-x-8 whitespace-nowrap px-4 text-sm font-semibold uppercase tracking-wider text-gold/90">
+        {row.map((t, i) => (
+          <span key={`${t}-${i}`} className="flex items-center gap-2">
             <span className="text-leaf">✦</span> {t}
           </span>
         ))}
@@ -302,17 +340,16 @@ function Wholesale() {
                     </li>
                   ))}
                 </ul>
-                <a
-                  href={waLink(`Hi CUP2EAT! I'm interested in the ${t.name} (${t.price} ${t.unit}).`)}
-                  target="_blank"
-                  className={`mt-8 block rounded-full px-6 py-3 text-center font-semibold transition ${
+                <OrderButton
+                  intent={{ mode: "pack", pack: t.highlight ? "premium" : "standard" }}
+                  className={`mt-8 block w-full rounded-full px-6 py-3 text-center font-semibold transition ${
                     t.highlight
                       ? "bg-gold text-forest-deep hover:bg-gold-soft"
                       : "border border-cream/30 text-cream hover:border-gold hover:text-gold"
                   }`}
                 >
-                  Enquire on WhatsApp
-                </a>
+                  Order this pack
+                </OrderButton>
               </div>
             </Reveal>
           ))}
@@ -390,24 +427,77 @@ function Reviews() {
           </p>
         </Reveal>
 
-        <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {[1, 2, 3].map((n) => (
-            <Reveal key={n} delay={n * 100}>
-              {/* TODO: replace with Instagram embed <blockquote class="instagram-media" ...> + embed.js */}
-              <div className="flex aspect-[9/13] flex-col items-center justify-center rounded-2xl border border-dashed border-cream/20 bg-forest-deep p-6 text-center">
-                <div className="text-3xl">▶</div>
-                <p className="mt-3 text-sm text-cream/50">
-                  Instagram reel #{n}
-                  <br />
-                  <span className="text-xs">paste a reel URL to embed here</span>
-                </p>
-              </div>
+        <div className="mt-12 grid items-start gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          {REELS.map((url, i) => (
+            <Reveal key={url} delay={(i % 3) * 100}>
+              <InstagramEmbed url={url} />
             </Reveal>
           ))}
         </div>
-        <p className="mt-8 text-center text-xs text-cream/40">
-          Send me the reel URLs you want featured and I&apos;ll wire the live embeds.
-        </p>
+        <div className="mt-10 text-center">
+          <a
+            href={BRAND.instagram}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-block rounded-full border border-cream/30 px-7 py-3 font-semibold text-cream transition hover:border-gold hover:text-gold"
+          >
+            Follow @cup2eat on Instagram
+          </a>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ---------------- FAQ ---------------- */
+function FAQ() {
+  const faqs = [
+    {
+      q: "Can you really eat the cup?",
+      a: "Yes! The cup is 100% edible, made from a biscuit-style dough. Enjoy your drink, then eat the cup — or let it compost naturally. Nothing to throw away.",
+    },
+    {
+      q: "What flavours are available?",
+      a: "Chocolate, Vanilla and Elaichi in the standard range, plus a premium Chocolate Coated cup. Each holds 100 ml — perfect for chai, coffee, ice-cream and desserts.",
+    },
+    {
+      q: "Does the cup get soggy?",
+      a: "No. The cups are designed to hold hot and cold drinks long enough to enjoy them, staying crunchy to the last sip.",
+    },
+    {
+      q: "Do you deliver across India?",
+      a: "Yes — free delivery all over India. Retail and wholesale orders both ship nationwide with safe, protective packaging.",
+    },
+    {
+      q: "Are the cups food-safe?",
+      a: `Absolutely. CUP2EAT is FSSAI licensed (Reg. No. ${BRAND.fssai}). Because you're eating the cup, food safety is our top priority. They're pure veg and vegan friendly.`,
+    },
+    {
+      q: "Can I order in bulk for my café or event?",
+      a: "Yes. Choose a wholesale pack in the order window, or message us on WhatsApp for custom quantities for cafés, restaurants, weddings and events.",
+    },
+  ];
+  return (
+    <section className="bg-forest-deep py-24">
+      <div className="mx-auto max-w-3xl px-5">
+        <Reveal className="text-center">
+          <h2 className="font-serif text-4xl font-bold text-cream md:text-5xl">
+            Frequently <span className="text-gradient-gold">Asked</span>
+          </h2>
+        </Reveal>
+        <div className="mt-10 space-y-3">
+          {faqs.map((f, i) => (
+            <Reveal key={f.q} delay={i * 60}>
+              <details className="group rounded-2xl border border-cream/10 bg-forest p-5 transition hover:border-gold/40">
+                <summary className="flex cursor-pointer list-none items-center justify-between font-semibold text-cream">
+                  {f.q}
+                  <span className="ml-4 text-gold transition group-open:rotate-45">+</span>
+                </summary>
+                <p className="mt-3 text-sm leading-relaxed text-cream/70">{f.a}</p>
+              </details>
+            </Reveal>
+          ))}
+        </div>
       </div>
     </section>
   );
@@ -427,10 +517,14 @@ function Contact() {
             or event. We deliver all over India.
           </p>
           <div className="mt-8 flex flex-wrap justify-center gap-4">
+            <OrderButton className="rounded-full bg-gold px-8 py-4 font-semibold text-forest-deep shadow-lg shadow-gold/20 transition hover:bg-gold-soft">
+              Order Now →
+            </OrderButton>
             <a
               href={waLink("Hi CUP2EAT! I'd like to place an order.")}
               target="_blank"
-              className="rounded-full bg-gold px-8 py-4 font-semibold text-forest-deep shadow-lg shadow-gold/20 transition hover:bg-gold-soft"
+              rel="noopener noreferrer"
+              className="rounded-full border border-cream/30 px-8 py-4 font-semibold text-cream transition hover:border-gold hover:text-gold"
             >
               💬 WhatsApp Us
             </a>
@@ -460,8 +554,14 @@ function Footer() {
       <div className="mx-auto max-w-7xl px-5">
         <div className="flex flex-col items-center justify-between gap-6 md:flex-row">
           <div className="flex items-center gap-2.5">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src="/logo/cup2eat-logo.svg" alt="CUP2EAT logo" className="h-11 w-11" />
+            <span className="block h-11 w-11 overflow-hidden rounded-full ring-1 ring-gold/40">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src="/logo/logo.png"
+                alt="CUP2EAT logo"
+                className="h-full w-full scale-[1.18] object-cover"
+              />
+            </span>
             <span className="font-serif text-xl font-bold text-cream">
               CUP<span className="text-gold">2</span>EAT
             </span>

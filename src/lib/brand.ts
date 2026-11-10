@@ -64,6 +64,14 @@ export const USE_CASES = [
   { icon: "🎉", title: "Events & Catering", text: "Zero-waste wow factor at any gathering." },
 ];
 
+export const REELS = [
+  "https://www.instagram.com/reel/DfOXPhOSq2m/",
+  "https://www.instagram.com/reel/DfUO4KpyzXf/",
+  "https://www.instagram.com/reel/DfTiJVgyHpb/",
+  "https://www.instagram.com/reel/DfeVecPh0dp/",
+  "https://www.instagram.com/reel/DfgoS52S2a3/",
+];
+
 export const TRUST = [
   "100% Edible",
   "Pure Veg",

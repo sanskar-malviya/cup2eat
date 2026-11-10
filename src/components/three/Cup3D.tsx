@@ -3,26 +3,31 @@
 import { Canvas } from "@react-three/fiber";
 import { ContactShadows, OrbitControls, Float } from "@react-three/drei";
 import { Suspense } from "react";
-import CupGLB, { CupGLBProps } from "./CupGLB";
+import CupGLB from "./CupGLB";
 
-type Cup3DProps = Omit<CupGLBProps, "url"> & {
+type Cup3DProps = {
   url?: string;
-  interactive?: boolean;
+  tint?: string;
+  glossy?: boolean;
+  variant?: "hero" | "card";
   className?: string;
 };
 
 export default function Cup3D({
-  interactive = false,
-  className,
   url = "/models/cup-base.glb",
-  ...cupProps
+  tint,
+  glossy,
+  variant = "card",
+  className,
 }: Cup3DProps) {
+  const hero = variant === "hero";
+
   return (
     <div className={className}>
       <Canvas
         shadows
         dpr={[1, 2]}
-        camera={{ position: [0, 1.2, 5], fov: 38 }}
+        camera={{ position: hero ? [0, 0, 7] : [0, 1.1, 5], fov: hero ? 30 : 38 }}
         gl={{ antialias: true, alpha: true }}
       >
         <ambientLight intensity={0.7} />
@@ -37,28 +42,44 @@ export default function Cup3D({
         <pointLight position={[0, 3, 3]} intensity={0.6} color="#ffe8c0" />
 
         <Suspense fallback={null}>
-          {interactive ? (
-            <Float speed={1.4} rotationIntensity={0.3} floatIntensity={0.6}>
-              <CupGLB url={url} {...cupProps} />
+          {hero ? (
+            <Float speed={1.2} rotationIntensity={0.2} floatIntensity={0.5}>
+              <CupGLB
+                url={url}
+                tint={tint}
+                glossy={glossy}
+                anchor="center"
+                targetHeight={2.0}
+                scrollReact
+                spin
+              />
             </Float>
           ) : (
-            <CupGLB url={url} {...cupProps} />
+            <>
+              <CupGLB
+                url={url}
+                tint={tint}
+                glossy={glossy}
+                anchor="base"
+                targetHeight={2.1}
+                spin
+              />
+              <ContactShadows
+                position={[0, -1.28, 0]}
+                opacity={0.45}
+                scale={7}
+                blur={2.6}
+                far={4}
+              />
+            </>
           )}
-
-          <ContactShadows
-            position={[0, -1.28, 0]}
-            opacity={0.5}
-            scale={8}
-            blur={2.6}
-            far={4}
-          />
         </Suspense>
 
-        {interactive && (
+        {hero && (
           <OrbitControls
             enableZoom={false}
             enablePan={false}
-            minPolarAngle={Math.PI / 3}
+            minPolarAngle={Math.PI / 2.6}
             maxPolarAngle={Math.PI / 1.9}
           />
         )}

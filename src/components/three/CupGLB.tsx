@@ -1,18 +1,19 @@
 "use client";
 
-import { useMemo, useRef } from "react";
+import { useEffect, useMemo, useRef } from "react";
 import { useFrame } from "@react-three/fiber";
 import { useGLTF } from "@react-three/drei";
 import * as THREE from "three";
 
 export type CupGLBProps = {
   url: string;
-  /** optional colour multiply to differentiate flavours */
   tint?: string;
   glossy?: boolean;
   spin?: boolean;
-  /** target height in world units */
   targetHeight?: number;
+  anchor?: "center" | "base";
+  /** rotate/tilt a little as the page scrolls (hero only) */
+  scrollReact?: boolean;
 };
 
 export default function CupGLB({
@@ -20,14 +21,25 @@ export default function CupGLB({
   tint,
   glossy = false,
   spin = true,
-  targetHeight = 2.5,
+  targetHeight = 2.1,
+  anchor = "center",
+  scrollReact = false,
 }: CupGLBProps) {
   const { scene } = useGLTF(url);
   const group = useRef<THREE.Group>(null);
+  const scrollY = useRef(0);
 
-  // clone the scene + materials so each instance tints independently,
-  // then normalise scale and drop its base onto y=0.
-  const { object, scale, yOffset } = useMemo(() => {
+  useEffect(() => {
+    if (!scrollReact) return;
+    const onScroll = () => {
+      scrollY.current = window.scrollY || 0;
+    };
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, [scrollReact]);
+
+  const { object, scale, offsetY } = useMemo(() => {
     const obj = scene.clone(true);
     obj.traverse((o) => {
       const m = o as THREE.Mesh;
@@ -46,18 +58,30 @@ export default function CupGLB({
     });
     const box = new THREE.Box3().setFromObject(obj);
     const size = new THREE.Vector3();
+    const center = new THREE.Vector3();
     box.getSize(size);
+    box.getCenter(center);
     const s = targetHeight / (size.y || 1);
-    const yOff = -box.min.y * s; // base at y=0
-    return { object: obj, scale: s, yOffset: yOff };
-  }, [scene, tint, glossy, targetHeight]);
+    const off = anchor === "base" ? -box.min.y * s : -center.y * s;
+    return { object: obj, scale: s, offsetY: off };
+  }, [scene, tint, glossy, targetHeight, anchor]);
 
-  useFrame((_, dt) => {
-    if (spin && group.current) group.current.rotation.y += dt * 0.5;
+  const baseY = anchor === "base" ? -1.25 : 0;
+
+  useFrame((state, dt) => {
+    const g = group.current;
+    if (!g) return;
+    if (spin) g.rotation.y += dt * 0.35;
+    if (scrollReact) {
+      g.rotation.y += scrollY.current * 0.0006;
+      g.rotation.x = Math.sin(scrollY.current * 0.0012) * 0.12;
+      g.position.y =
+        offsetY + baseY + Math.sin(state.clock.elapsedTime * 1.1) * 0.08;
+    }
   });
 
   return (
-    <group ref={group} position={[0, yOffset - 1.25, 0]} scale={scale}>
+    <group ref={group} position={[0, offsetY + baseY, 0]} scale={scale}>
       <primitive object={object} />
     </group>
   );

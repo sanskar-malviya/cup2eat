@@ -55,7 +55,7 @@ function Nav() {
             />
           </span>
           <span className="font-serif text-xl font-bold tracking-wide text-cream">
-            CUP<span className="text-gold">2</span>EAT
+            CUP<span className="text-gold text-[1.35em] font-extrabold">2</span>EAT
           </span>
         </a>
         <nav className="hidden items-center gap-8 text-sm font-medium text-cream/80 md:flex">
@@ -563,7 +563,7 @@ function Footer() {
               />
             </span>
             <span className="font-serif text-xl font-bold text-cream">
-              CUP<span className="text-gold">2</span>EAT
+              CUP<span className="text-gold text-[1.35em] font-extrabold">2</span>EAT
             </span>
           </div>
           <div className="flex flex-wrap items-center justify-center gap-5 text-sm text-cream/60">

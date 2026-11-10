@@ -14,10 +14,13 @@ const poppins = Poppins({
   weight: ["300", "400", "500", "600", "700"],
 });
 
+const SITE_URL =
+  process.env.NEXT_PUBLIC_SITE_URL ||
+  process.env.URL || // Netlify sets this to the site's primary URL at build time
+  "https://cup2eat1.netlify.app";
+
 export const metadata: Metadata = {
-  metadataBase: new URL(
-    process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000"
-  ),
+  metadataBase: new URL(SITE_URL),
   title: "CUP2EAT — Eat Your Drink | Edible, Zero-Waste Cups",
   description:
     "India's edible, biodegradable cups. Drink your chai, coffee or dessert — then eat the cup. FSSAI licensed. Free delivery all over India. Wholesale for cafés, restaurants & events.",

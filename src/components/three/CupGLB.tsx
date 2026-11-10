@@ -68,15 +68,16 @@ export default function CupGLB({
 
   const baseY = anchor === "base" ? -1.25 : 0;
 
-  useFrame((state, dt) => {
+  useFrame((state) => {
     const g = group.current;
     if (!g) return;
-    if (spin) g.rotation.y += dt * 0.35;
+    const t = state.clock.elapsedTime;
+    // gentle constant spin + a BOUNDED scroll offset (not accumulating per frame)
+    const scrollOffset = scrollReact ? scrollY.current * 0.0007 : 0;
+    if (spin) g.rotation.y = t * 0.12 + scrollOffset;
     if (scrollReact) {
-      g.rotation.y += scrollY.current * 0.0006;
-      g.rotation.x = Math.sin(scrollY.current * 0.0012) * 0.12;
-      g.position.y =
-        offsetY + baseY + Math.sin(state.clock.elapsedTime * 1.1) * 0.08;
+      g.rotation.x = Math.sin(scrollY.current * 0.0008) * 0.06;
+      g.position.y = offsetY + baseY + Math.sin(t) * 0.06;
     }
   });
 

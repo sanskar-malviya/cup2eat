@@ -110,7 +110,7 @@ function Hero() {
           <p className="mt-6 text-sm text-cream/50">
             ₹20 / cup retail · from ~₹10 / cup wholesale · 4 flavours
           </p>
-          <div className="mt-8 flex gap-8 border-t border-cream/10 pt-6">
+          <div className="mt-8 flex flex-wrap gap-x-6 gap-y-4 border-t border-cream/10 pt-6">
             {[
               { n: "100ml", l: "per cup" },
               { n: "4", l: "flavours" },
@@ -118,18 +118,20 @@ function Hero() {
               { n: "Pan-India", l: "free delivery" },
             ].map((s) => (
               <div key={s.l}>
-                <div className="font-serif text-xl font-bold text-gradient-gold">{s.n}</div>
+                <div className="font-serif text-lg font-bold text-gradient-gold sm:text-xl">
+                  {s.n}
+                </div>
                 <div className="text-xs text-cream/50">{s.l}</div>
               </div>
             ))}
           </div>
         </div>
 
-        <div className="relative h-[420px] md:h-[600px]">
+        <div
+          className="pointer-events-none relative order-first h-[300px] w-full sm:h-[420px] md:order-none md:h-[600px]"
+          style={{ touchAction: "pan-y" }}
+        >
           <Cup3DClient variant="hero" className="h-full w-full" />
-          <p className="absolute bottom-2 left-1/2 -translate-x-1/2 text-xs uppercase tracking-widest text-cream/40">
-            drag to spin
-          </p>
         </div>
       </div>
     </section>

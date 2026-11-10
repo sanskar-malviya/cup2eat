@@ -1,7 +1,7 @@
 "use client";
 
 import { Canvas } from "@react-three/fiber";
-import { ContactShadows, OrbitControls, Float } from "@react-three/drei";
+import { ContactShadows, Float } from "@react-three/drei";
 import { Suspense } from "react";
 import CupGLB from "./CupGLB";
 
@@ -74,15 +74,6 @@ export default function Cup3D({
             </>
           )}
         </Suspense>
-
-        {hero && (
-          <OrbitControls
-            enableZoom={false}
-            enablePan={false}
-            minPolarAngle={Math.PI / 2.6}
-            maxPolarAngle={Math.PI / 1.9}
-          />
-        )}
       </Canvas>
     </div>
   );
